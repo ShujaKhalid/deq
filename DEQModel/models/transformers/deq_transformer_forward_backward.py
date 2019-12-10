@@ -75,4 +75,4 @@ class TransformerDEQBackward(DEQBackward):
             res = DummyDEQFunc.apply(self.func_copy, new_z1ss, uss, z0_temp, pos_embss, threshold, train_step)
             z0_temp = res
             z1s_out[:,:,t:t+subseq_len] = res
-        return z1s_out, grad_f_x
+        return z1s_out
