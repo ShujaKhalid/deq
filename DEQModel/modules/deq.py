@@ -65,7 +65,6 @@ class DummyDEQFunc(Function):
         ctx.save_for_backward(z1ss, uss, z0)
         ctx.func = func_copy
         ctx.args = args
-        print('inside DummyDEQFunc forward')
         return z1ss
 
     @staticmethod
@@ -103,10 +102,8 @@ class DummyDEQFunc(Function):
         nstep = result_info['nstep']
         
         grad_f_x = g(dl_df_est)
-        grad_f_x_norm = (torch.norm(grad_f_x))**2
+        grad_f_x_norm = 0.0*(torch.norm(grad_f_x-1.0))**2
         
-        print('inside DummyDEQFunc backward')
-
         dl_df_est_reg = dl_df_est + grad_f_x_norm
 
         # Frees the buffers and drops the graph!

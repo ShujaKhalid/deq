@@ -396,19 +396,12 @@ def train():
                              b_thres=args.b_thres, subseq_len=subseq_len)
             loss, mems = ret[0], ret[1:]
 
-            # Find the gradient with respect to the equilibrium point
-            # and use it as a regularization term
-            #grad_f_x = grad_f_x.float().mean().type_as(loss)
+            # Gradient with respect to the equilibrium point
+            # is calculated in DummyDEQFunc.backward()
             loss = loss.float().mean().type_as(loss)
-            #loss = loss.float().mean().type_as(loss) + grad_f_x
-
-            #print(loss.shape)
-            #print(grad_f_x.shape)
 
             loss.backward()
             train_loss += loss.float().item()
-
-            print('propagated backwards!')
 
         torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
         optimizer.step()
