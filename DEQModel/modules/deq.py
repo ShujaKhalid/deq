@@ -102,7 +102,7 @@ class DummyDEQFunc(Function):
         nstep = result_info['nstep']
         
         grad_f_x = g(dl_df_est)
-        grad_f_x_norm = 0.2*(torch.norm(grad_f_x-1.0))**2
+        grad_f_x_norm = 0.4*(torch.norm(grad_f_x-1.0))**2
         
         dl_df_est_reg = dl_df_est + grad_f_x_norm
 
