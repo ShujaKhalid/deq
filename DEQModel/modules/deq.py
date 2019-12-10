@@ -103,14 +103,18 @@ class DummyDEQFunc(Function):
         nstep = result_info['nstep']
         
         grad_f_x = g(dl_df_est)
+        grad_f_x_norm = (torch.norm(grad_f_x))**2
         
         print('inside DummyDEQFunc backward')
+
+        dl_df_est_reg = dl_df_est + grad_f_x_norm
 
         # Frees the buffers and drops the graph!
         y.backward(torch.zeros_like(dl_df_est), retain_graph=False)
 
         grad_args = [None for _ in range(len(args))]
-        return (None, dl_df_est, None, None, *grad_args), grad_f_x
+        #return (None, dl_df_est, None, None, *grad_args) # regularized term
+        return (None, dl_df_est_reg, None, None, *grad_args)
 
 
 class DEQForward(nn.Module):
