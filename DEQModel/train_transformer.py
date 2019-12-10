@@ -398,8 +398,8 @@ def train():
             loss = loss.float().mean().type_as(loss)
             loss.backward()
             train_loss += loss.float().item()
-            print('weight_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.shape))
-            print('weight_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.grad))
+            logging('weight_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.shape))
+            logging('weight_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.grad.shape))
 
         torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
         optimizer.step()
