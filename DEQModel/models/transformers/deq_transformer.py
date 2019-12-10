@@ -371,12 +371,12 @@ class DEQTransformerLM(nn.Module):
             # pass according to the Theorem 1 in the paper.
             z1s = self.deq(z1s, us, z0, pos_emb=pos_emb, subseq_len=subseq_len, threshold=f_thres, train_step=train_step)
             if self.training:
-                z1s, grad_f_x = self.deqback(z1s, us, z0, pos_emb=pos_emb, subseq_len=subseq_len, threshold=b_thres, train_step=train_step)
+                z1s = self.deqback(z1s, us, z0, pos_emb=pos_emb, subseq_len=subseq_len, threshold=b_thres, train_step=train_step)
                     
         core_out = self.iodrop(z1s, self.dropout)
         core_out = core_out.permute(2,0,1).contiguous()       # qlen x bsz x d_model
         new_mems = self._update_mems(z1s, us, z0, mlen, qlen)
-        return core_out, new_mems, grad_f_x
+        return core_out, new_mems
 
     def forward(self, data, target, mems, train_step=-1, **kwargs):
         # nn.DataParallel does not allow size(0) tensors to be broadcasted.
