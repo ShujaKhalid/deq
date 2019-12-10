@@ -392,7 +392,8 @@ def train():
                 
         else:
             # Mode 2: Normal training with one batch per iteration
-            ret = para_model(data, target, mems, train_step=train_step, f_thres=args.f_thres, 
+            data_temp = data.grad.clone().detach()
+            ret = para_model(data_temp, target, mems, train_step=train_step, f_thres=args.f_thres, 
                              b_thres=args.b_thres, subseq_len=subseq_len)
             loss, mems = ret[0], ret[1:]
             loss = loss.float().mean().type_as(loss)
@@ -402,10 +403,10 @@ def train():
         torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
         optimizer.step()
 
-        if (batch>1):
-            logging('weight_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.shape))
-            logging('grad_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.grad.shape))
-            logging('||grad_dimensions||2: {}'.format(torch.norm(model.func.dec_attn.qkv_net.weight.grad)))
+        logging('data_temp.grad: {}'.format(data_temp.grad))
+        #logging('weight_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.shape))
+        #logging('grad_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.grad.shape))
+        #logging('||grad_dimensions||2: {}'.format(torch.norm(model.func.dec_attn.qkv_net.weight.grad)))
 
         train_step += 1
 
