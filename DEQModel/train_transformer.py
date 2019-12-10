@@ -75,6 +75,11 @@ parser.add_argument('--decay_rate', type=float, default=0.5,
                     help='decay factor when ReduceLROnPlateau is used')
 parser.add_argument('--lr_min', type=float, default=0.0,
                     help='minimum learning rate during annealing')
+parser.add_argument('--reg_sgd', type=float, default=0.0,
+                    help='Regularization term for speeding up convergence during SGD process')
+parser.add_argument('--reg_fpm', type=float, default=0.0,
+                    help='Regularization term for speeding up convergence during equilibrium point calculations')
+
 
 # Gradient updates
 parser.add_argument('--clip', type=float, default=0.25,
@@ -121,9 +126,9 @@ parser.add_argument('--varlen', action='store_true',
                     help='use variable length')
 parser.add_argument('--multi_gpu', action='store_true',
                     help='use multiple GPU')
-parser.add_argument('--log-interval', type=int, default=200,
+parser.add_argument('--log_interval', type=int, default=1,
                     help='report interval')
-parser.add_argument('--eval-interval', type=int, default=4000,
+parser.add_argument('--eval_interval', type=int, default=4000,
                     help='evaluation interval')
 parser.add_argument('--f_thres', type=int, default=50,
                     help='forward pass Broyden threshold')
