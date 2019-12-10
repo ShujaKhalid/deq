@@ -103,7 +103,9 @@ class DummyDEQFunc(Function):
         
         y.backward(torch.zeros_like(dl_df_est), retain_graph=False)
 
-        grad_f_x = z1ss_temp.grad.clone().detach()
+        #grad_f_x = z1ss_temp.grad.clone().detach()
+        grad_f_x = g(dl_df_est)
+
         print('clone_grad: {}'.format((grad_f_x).shape))
         print('||grad||2: {}'.format(torch.norm(grad_f_x)))
         print('(||grad||2)**2: {}'.format(torch.norm(grad_f_x)**2))
