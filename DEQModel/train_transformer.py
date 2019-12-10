@@ -398,14 +398,17 @@ def train():
 
             # Find the gradient with respect to the equilibrium point
             # and use it as a regularization term
-            grad_f_x = grad_f_x.float().mean().type_as(loss)
-            loss = loss.float().mean().type_as(loss) + grad_f_x
+            #grad_f_x = grad_f_x.float().mean().type_as(loss)
+            loss = loss.float().mean().type_as(loss)
+            #loss = loss.float().mean().type_as(loss) + grad_f_x
 
-            print(loss.shape)
-            print(grad_f_x.shape)
+            #print(loss.shape)
+            #print(grad_f_x.shape)
 
             loss.backward()
             train_loss += loss.float().item()
+
+            print('propagated backwards!')
 
         torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
         optimizer.step()
