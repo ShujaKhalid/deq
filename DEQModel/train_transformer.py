@@ -398,11 +398,14 @@ def train():
             loss = loss.float().mean().type_as(loss)
             loss.backward()
             train_loss += loss.float().item()
-            logging('weight_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.shape))
-            logging('weight_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.grad.shape))
 
         torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
         optimizer.step()
+
+        logging('weight_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.shape))
+        logging('grad_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.grad.shape))
+        logging('||grad_dimensions||2: {}'.format(torch.norm(model.func.dec_attn.qkv_net.weight.grad)))
+
         train_step += 1
 
         # Step-wise learning rate annealing according to some scheduling (we ignore 'constant' scheduling)
