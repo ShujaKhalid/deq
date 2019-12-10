@@ -402,9 +402,10 @@ def train():
         torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
         optimizer.step()
 
-        logging('weight_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.shape))
-        logging('grad_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.grad.shape))
-        logging('||grad_dimensions||2: {}'.format(torch.norm(model.func.dec_attn.qkv_net.weight.grad)))
+        if (batch>1):
+            logging('weight_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.shape))
+            logging('grad_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.grad.shape))
+            logging('||grad_dimensions||2: {}'.format(torch.norm(model.func.dec_attn.qkv_net.weight.grad)))
 
         train_step += 1
 
