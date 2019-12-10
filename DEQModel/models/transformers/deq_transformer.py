@@ -401,7 +401,7 @@ class DEQTransformerLM(nn.Module):
         subseq_len = kwargs.get('subseq_len', 75)
         f_thres = kwargs.get('f_thres', 30)
         b_thres = kwargs.get('b_thres', 40)
-        hidden, new_mems, grad_f_x = self._forward(data, subseq_len=subseq_len, mems=mems, 
+        hidden, new_mems = self._forward(data, subseq_len=subseq_len, mems=mems, 
                                          f_thres=f_thres, b_thres=b_thres, train_step=train_step)
         
         pred_hid = hidden[-tgt_len:]
@@ -409,9 +409,9 @@ class DEQTransformerLM(nn.Module):
         loss = loss.view(tgt_len, -1)
 
         if new_mems is None:
-            return [loss], grad_f_x
+            return [loss]
         else:
-            return [loss] + new_mems, grad_f_x
+            return [loss] + new_mems
 
 
 if __name__ == '__main__':
