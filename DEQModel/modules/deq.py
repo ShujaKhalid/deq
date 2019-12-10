@@ -101,18 +101,17 @@ class DummyDEQFunc(Function):
         dl_df_est = result_info['result']
         nstep = result_info['nstep']
         
-        #grad_f_x = z1ss_temp.grad.clone().detach()
         grad_f_x = g(dl_df_est)
 
         # Frees the buffers and drops the graph!
         y.backward(torch.zeros_like(dl_df_est), retain_graph=False)
 
-        print('clone_grad: {}'.format((grad_f_x).shape))
-        print('||grad||2: {}'.format(torch.norm(grad_f_x)))
-        print('(||grad||2)**2: {}'.format(torch.norm(grad_f_x)**2))
+        #print('clone_grad: {}'.format((grad_f_x).shape))
+        #print('||grad||2: {}'.format(torch.norm(grad_f_x)))
+        #print('(||grad||2)**2: {}'.format(torch.norm(grad_f_x)**2))
 
         grad_args = [None for _ in range(len(args))]
-        return (None, dl_df_est, None, None, *grad_args)
+        return (None, dl_df_est, None, None, *grad_args), grad_f_x
 
 
 class DEQForward(nn.Module):

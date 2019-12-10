@@ -392,19 +392,23 @@ def train():
                 
         else:
             # Mode 2: Normal training with one batch per iteration
-            ret = para_model(data, target, mems, train_step=train_step, f_thres=args.f_thres, 
+            ret, grad_f_x = para_model(data, target, mems, train_step=train_step, f_thres=args.f_thres, 
                              b_thres=args.b_thres, subseq_len=subseq_len)
             loss, mems = ret[0], ret[1:]
-            loss = loss.float().mean().type_as(loss)
+
+            # Find the gradient with respect to the equilibrium point
+            # and use it as a regularization term
+            grad_f_x = grad_f_x.float().mean().type_as(loss)
+            loss = loss.float().mean().type_as(loss) + grad_f_x
+
+            print(loss.shape)
+            print(grad_f_x.shape)
+
             loss.backward()
             train_loss += loss.float().item()
 
         torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
         optimizer.step()
-
-        #logging('weight_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.shape))
-        #logging('grad_dimensions: {}'.format(model.func.dec_attn.qkv_net.weight.grad.shape))
-        #logging('||grad_dimensions||2: {}'.format(torch.norm(model.func.dec_attn.qkv_net.weight.grad)))
 
         train_step += 1
 
@@ -425,9 +429,9 @@ def train():
             cur_loss = train_loss / args.log_interval
             elapsed = time.time() - log_start_time
             log_str = '| epoch {:3d} step {:>8d} | {:>6d} batches | lr {:.3g} ' \
-                      '| ms/batch {:5.2f} | loss {:5.2f} | ppl {:9.3f}'.format(
+                      '| ms/batch {:5.2f} | loss {:5.10f} | ppl {:9.3f}'.format(
                 epoch, train_step, batch+1, optimizer.param_groups[0]['lr'],
-                elapsed * 1000 / args.log_interval, cur_loss, math.exp(cur_loss))
+                elapsed * 1000 / args.log_interval, cur_loss, math.exp(cur_loss), )
             logging(log_str)
             train_loss = 0
             log_start_time = time.time()
