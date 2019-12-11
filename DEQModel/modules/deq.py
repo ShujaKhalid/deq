@@ -105,8 +105,8 @@ class DummyDEQFunc(Function):
         grad_f_x_norm = 1.0*((torch.norm(grad_f_x-1.0))**2)
         
         dl_df_est_reg = dl_df_est + grad_f_x_norm
-        print('grad_f_x_norm: {}'.format(grad_f_x_norm))
-        print('dl_df_est: {}'.format(dl_df_est))
+        print('grad_f_x_norm: {}'.format(grad_f_x_norm.shape))
+        print('dl_df_est: {}'.format(dl_df_est.shape))
         print('(torch.norm(grad_f_x))**2: {}'.format((torch.norm(grad_f_x))**2))
 
         # Frees the buffers and drops the graph!
