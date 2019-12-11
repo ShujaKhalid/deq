@@ -70,8 +70,8 @@ class TransformerDEQBackward(DEQBackward):
             uss = us[:,:,(t+pad_len-prev_len):(t+pad_len+subseq_len)]
             pos_embss = pos_emb[:,:,-uss.size(2):]     # The last (prev_len + subseq_len) positions
 
-            new_z1ss, g_f_x = DEQFunc.f(self.func, z1ss, uss, z0_temp, pos_embss, threshold, train_step)
+            new_z1ss = DEQFunc.f(self.func, z1ss, uss, z0_temp, pos_embss, threshold, train_step)
             res = DummyDEQFunc.apply(self.func_copy, new_z1ss, uss, z0_temp, pos_embss, threshold, train_step)
             z0_temp = res
             z1s_out[:,:,t:t+subseq_len] = res
-        return z1s_out, g_f_x
+        return z1s_out
