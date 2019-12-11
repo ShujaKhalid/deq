@@ -21,8 +21,8 @@ if [[ $1 == 'train' ]]; then
         --lr 0.00025 \
         --warmup_step 0 \
         --pretrain_steps 0 \
-        --log_interval 100 \
-        --eval_interval 1000 \
+        --log_interval 1 \
+        --eval_interval 10 \
         --max_step 300000 \
         --tgt_len 150 \
         --mem_len 150 \
