@@ -42,8 +42,8 @@ class DEQFunc(Function):
             JTx = z1ss_est.grad.clone().detach()
             z1ss_est.grad.zero_()
             return JTx
-        
-        g_f_x = grad_f_x(z1ss_est)
+
+        #g_f_x = grad_f_x(z1ss_est)
         g_f_x = torch.zeros_like(z1ss_est)
         #print('grad_f_x(z1ss_est): {}'.format(grad_f_x(z1ss_est).shape))
         print('torch.norm(grad_f_x(z1ss_est))**2: {}'.format(torch.norm(grad_f_x(z1ss_est).mean())**2))
@@ -51,6 +51,7 @@ class DEQFunc(Function):
         #print('func.dec_attn.qkv_net.weight.shape: {}'.format(func.dec_attn.qkv_net.weight.shape))
         #print('func.dec_attn.qkv_net.weight.grad: {}'.format(func.dec_attn.qkv_net.grad))
             
+        y.backward(torch.zeros_like(z1ss_est), retain_graph=False)
 
         z1ss_est = result_info['result']
         nstep = result_info['nstep']
