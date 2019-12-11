@@ -44,13 +44,13 @@ class DEQFunc(Function):
         result_info = broyden(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
         #g_f_x = grad_f_x(z1ss_est)
         g_f_x = torch.zeros_like(z1ss_est)
+        print('func.dec_attn.qkv_net.weight.shape: {}'.format(func.dec_attn.qkv_net.weight.shape))
+        print('func.dec_attn.qkv_net.weight.grad: {}'.format(func.dec_attn.qkv_net.weight.grad))
         #print('grad_f_x(z1ss_est): {}'.format(grad_f_x(z1ss_est).shape))
         #print('torch.norm(grad_f_x(z1ss_est))**2: {}'.format(torch.norm(grad_f_x(z1ss_est).mean())**2))
 
         z1ss_est = result_info['result']
         nstep = result_info['nstep']
-
-        #print('nstep: {}'.format(nstep))
 
         if threshold > 100:
             torch.cuda.empty_cache()
