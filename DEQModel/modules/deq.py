@@ -43,7 +43,7 @@ class DEQFunc(Function):
         g = lambda x: DEQFunc.g(func, x, uss, z0, *args)
         result_info = broyden(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
         #g_f_x = grad_f_x(z1ss_est)
-        g_f_x = torch.autograd.Variable(torch.tensor(0.0))
+        g_f_x = torch.zeros_like(z1ss_est)
         #print('grad_f_x(z1ss_est): {}'.format(grad_f_x(z1ss_est).shape))
         #print('torch.norm(grad_f_x(z1ss_est))**2: {}'.format(torch.norm(grad_f_x(z1ss_est).mean())**2))
 
