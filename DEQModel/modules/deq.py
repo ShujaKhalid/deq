@@ -43,7 +43,7 @@ class DEQFunc(Function):
         result_info = broyden(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
         g_f_x = grad_f_x(z1ss_est)
         #print('grad_f_x(z1ss_est): {}'.format(grad_f_x(z1ss_est).shape))
-        #print('torch.norm(grad_f_x(z1ss_est))**2: {}'.format(torch.norm(grad_f_x(z1ss_est))**2))
+        print('torch.norm(grad_f_x(z1ss_est))**2: {}'.format(torch.norm(grad_f_x(z1ss_est).mean())**2))
 
         z1ss_est = result_info['result']
         nstep = result_info['nstep']
