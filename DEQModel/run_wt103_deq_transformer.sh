@@ -21,14 +21,14 @@ if [[ $1 == 'train' ]]; then
         --lr 0.00025 \
         --warmup_step 0 \
         --pretrain_steps 0 \
-        --log_interval 1 \
-        --eval_interval 5 \
+        --log_interval 200 \
+        --eval_interval 2000 \
         --max_step 5 \
         --tgt_len 150 \
         --mem_len 150 \
         --eval_tgt_len 150 \
         --wnorm \
-        --f_thres 250 \
+        --f_thres 30 \
         --b_thres 40 \
         --subseq_len 75 \
         --batch_size 56 \

@@ -48,7 +48,7 @@ class DEQFunc(Function):
         z1ss_est = result_info['result']
         nstep = result_info['nstep']
 
-        print('nstep: {}'.format(nstep))
+        #print('nstep: {}'.format(nstep))
 
         if threshold > 100:
             torch.cuda.empty_cache()
