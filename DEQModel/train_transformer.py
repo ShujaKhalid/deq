@@ -398,12 +398,12 @@ def train():
 
             # Gradient with respect to the equilibrium point
             # is calculated in DummyDEQFunc.backward()
-            loss = loss.float().mean().type_as(loss)
-            reg = 1.0*torch.norm(g_f_x.float().mean().type_as(loss))**2
+            reg = 1.0*(torch.norm(g_f_x.float().mean().type_as(loss))**2)
+            loss = loss.float().mean().type_as(loss) + reg
 
-            print('loss: {}'.format(loss))
-            print('reg: {}'.format(reg))
-            print('torch.norm(g_f_x.float().mean().type_as(loss)): {}'.format(torch.norm(g_f_x.float().mean().type_as(loss))))
+            #print('loss: {}'.format(loss))
+            #print('reg: {}'.format(reg))
+            #print('torch.norm(g_f_x.float().mean().type_as(loss)): {}'.format(torch.norm(g_f_x.float().mean().type_as(loss))))
 
             loss.backward()
             train_loss += loss.float().item()
