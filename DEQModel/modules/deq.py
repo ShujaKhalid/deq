@@ -34,14 +34,15 @@ class DEQFunc(Function):
         with torch.enable_grad():
             y = DEQFunc.f(func, z1ss_est, uss, z0, *args)
 
+        g = lambda x: DEQFunc.g(func, x, uss, z0, *args)
+        result_info = broyden(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
+
         def grad_f_x(x):
             y.backward(x, retain_graph=True)   # Retain for future calls to g
             JTx = z1ss_est.grad.clone().detach()
             z1ss_est.grad.zero_()
             return JTx
-
-        g = lambda x: DEQFunc.g(func, x, uss, z0, *args)
-        result_info = broyden(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
+        
         g_f_x = grad_f_x(z1ss_est)
         g_f_x = torch.zeros_like(z1ss_est)
         #print('grad_f_x(z1ss_est): {}'.format(grad_f_x(z1ss_est).shape))
