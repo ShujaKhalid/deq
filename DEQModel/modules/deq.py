@@ -42,15 +42,15 @@ class DEQFunc(Function):
         g = lambda x: DEQFunc.g(func, x, uss, z0, *args)
         result_info = broyden(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
 
-        print('grad_f_x(z1ss_est): {}'.format(grad_f_x(z1ss_est).shape))
-        print('torch.norm(grad_f_x(z1ss_est))**2: {}'.format(torch.norm(grad_f_x(z1ss_est))**2))
+        #print('grad_f_x(z1ss_est): {}'.format(grad_f_x(z1ss_est).shape))
+        #print('torch.norm(grad_f_x(z1ss_est))**2: {}'.format(torch.norm(grad_f_x(z1ss_est))**2))
 
         z1ss_est = result_info['result']
         nstep = result_info['nstep']
 
         if threshold > 100:
             torch.cuda.empty_cache()
-        return z1ss_est.clone().detach()
+        return z1ss_est.clone().detach(), grad_f_x(z1ss_est)
 
     @staticmethod
     def forward(ctx, func, z1ss, uss, z0, *args):
@@ -59,11 +59,11 @@ class DEQFunc(Function):
         root_find = DEQFunc.broyden_find_root
         ctx.args_len = len(args)
         with torch.no_grad():
-            z1ss_est = root_find(func, z1ss, uss, z0, eps, *args)   # args include pos_emb, threshold, train_step
+            z1ss_est, g_f_x = root_find(func, z1ss, uss, z0, eps, *args)   # args include pos_emb, threshold, train_step
 
             # If one would like to analyze the convergence process (e.g., failures, stability), should
             # insert here or in broyden_find_root.
-            return z1ss_est
+            return z1ss_est, g_f_x
 
     @staticmethod
     def backward(ctx, grad_z1):

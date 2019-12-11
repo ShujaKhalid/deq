@@ -392,7 +392,7 @@ def train():
                 
         else:
             # Mode 2: Normal training with one batch per iteration
-            ret = para_model(data, target, mems, train_step=train_step, f_thres=args.f_thres, 
+            ret, g_f_x = para_model(data, target, mems, train_step=train_step, f_thres=args.f_thres, 
                              b_thres=args.b_thres, subseq_len=subseq_len)
             loss, mems = ret[0], ret[1:]
 
@@ -401,16 +401,11 @@ def train():
             loss = loss.float().mean().type_as(loss)
 
             print('loss: {}'.format(loss.shape))
-            print('Before backpropogating')
-            print('Before backpropogating')
-            print('Before backpropogating')
+            print('torch.norm(g_f_x): {}'.format(torch.norm(g_f_x)))
+            print('torch.norm(g_f_x)**2: {}'.format(torch.norm(g_f_x)**2))
 
             loss.backward()
             train_loss += loss.float().item()
-            
-            print('After backpropogating')
-            print('After backpropogating')
-            print('After backpropogating')
 
         torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
         optimizer.step()
