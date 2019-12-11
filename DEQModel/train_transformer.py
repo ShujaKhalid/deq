@@ -398,7 +398,7 @@ def train():
 
             # Gradient with respect to the equilibrium point
             # is calculated in DummyDEQFunc.backward()
-            reg = 0.4*(torch.norm(g_f_x.float().mean().type_as(loss))**2)
+            reg = 0.0*(torch.norm(g_f_x.float().mean().type_as(loss)-1.0)**2)
             loss = loss.float().mean().type_as(loss) + reg
 
             #print('loss: {}'.format(loss))
@@ -430,9 +430,9 @@ def train():
             cur_loss = train_loss / args.log_interval
             elapsed = time.time() - log_start_time
             log_str = '| epoch {:3d} step {:>8d} | {:>6d} batches | lr {:.3g} ' \
-                      '| ms/batch {:5.2f} | loss {:5.10f} | ppl {:9.3f}'.format(
+                      '| ms/batch {:5.2f} | loss {:5.10f} | ppl {:9.3f} | reg {:2.10f}'.format(
                 epoch, train_step, batch+1, optimizer.param_groups[0]['lr'],
-                elapsed * 1000 / args.log_interval, cur_loss, math.exp(cur_loss), )
+                elapsed * 1000 / args.log_interval, cur_loss, math.exp(cur_loss), reg)
             logging(log_str)
             train_loss = 0
             log_start_time = time.time()
