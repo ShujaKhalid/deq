@@ -44,8 +44,6 @@ class DEQFunc(Function):
         result_info = broyden(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
         #g_f_x = grad_f_x(z1ss_est)
         g_f_x = torch.zeros_like(z1ss_est)
-        print('func.dec_attn.qkv_net.weight.shape: {}'.format(func.dec_attn.qkv_net.weight.shape))
-        print('func.dec_attn.qkv_net.weight.grad: {}'.format(func.dec_attn.qkv_net.weight.grad))
         #print('grad_f_x(z1ss_est): {}'.format(grad_f_x(z1ss_est).shape))
         #print('torch.norm(grad_f_x(z1ss_est))**2: {}'.format(torch.norm(grad_f_x(z1ss_est).mean())**2))
 
@@ -62,6 +60,10 @@ class DEQFunc(Function):
         eps = 1e-6 * np.sqrt(bsz * seq_len * d_model)
         root_find = DEQFunc.broyden_find_root
         ctx.args_len = len(args)
+
+        print('func.dec_attn.qkv_net.weight.shape: {}'.format(func.dec_attn.qkv_net.weight.shape))
+        print('func.dec_attn.qkv_net.weight.grad: {}'.format(func.dec_attn.qkv_net.weight.grad))
+
         with torch.no_grad():
             z1ss_est, g_f_x = root_find(func, z1ss, uss, z0, eps, *args)   # args include pos_emb, threshold, train_step
 
