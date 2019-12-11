@@ -400,11 +400,17 @@ def train():
             # is calculated in DummyDEQFunc.backward()
             loss = loss.float().mean().type_as(loss)
 
-            print('loss: {}'.format(loss))
+            print('loss: {}'.format(loss.shape))
+            print('Before backpropogating')
+            print('Before backpropogating')
             print('Before backpropogating')
 
             loss.backward()
             train_loss += loss.float().item()
+            
+            print('Before backpropogating')
+            print('Before backpropogating')
+            print('Before backpropogating')
 
         torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
         optimizer.step()
