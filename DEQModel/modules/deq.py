@@ -114,7 +114,7 @@ class DummyDEQFunc(Function):
 
         grad_args = [None for _ in range(len(args))]
         #return (None, dl_df_est, None, None, *grad_args) # regularized term
-        return (None, dl_df_est_reg, None, None, *grad_args)
+        return (None, None, dl_df_est_reg, None, None, *grad_args)
 
 
 class DEQForward(nn.Module):

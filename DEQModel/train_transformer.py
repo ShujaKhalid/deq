@@ -408,9 +408,9 @@ def train():
             loss.backward()
             train_loss += loss.float().item()
             
-            print('Before backpropogating')
-            print('Before backpropogating')
-            print('Before backpropogating')
+            print('After backpropogating')
+            print('After backpropogating')
+            print('After backpropogating')
 
         torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
         optimizer.step()
