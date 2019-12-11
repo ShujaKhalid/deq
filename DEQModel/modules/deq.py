@@ -38,7 +38,7 @@ class DEQFunc(Function):
         result_info = broyden(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
 
         def grad_f_x(x):
-            y.backward(x, retain_graph=True)   # Retain for future calls to g
+            func.backward(x, retain_graph=True)   # Retain for future calls to g
             JTx = z1ss_est.grad.clone().detach()
             z1ss_est.grad.zero_()
             return JTx
@@ -46,13 +46,9 @@ class DEQFunc(Function):
         #g_f_x = grad_f_x(z1ss_est)
         g_f_x = torch.zeros_like(z1ss_est)
         #print('grad_f_x(z1ss_est): {}'.format(grad_f_x(z1ss_est).shape))
-        print('torch.norm(grad_f_x(z1ss_est))**2: {}'.format(torch.norm(grad_f_x(z1ss_est).mean())**2))
-
-        #print('func.dec_attn.qkv_net.weight.shape: {}'.format(func.dec_attn.qkv_net.weight.shape))
-        #print('func.dec_attn.qkv_net.weight.grad: {}'.format(func.dec_attn.qkv_net.grad))
-            
-        y.backward(torch.zeros_like(z1ss_est), retain_graph=False)
-
+        
+        #print('torch.norm(grad_f_x(z1ss_est))**2: {}'.format(torch.norm(grad_f_x(z1ss_est).mean())**2))
+           
         z1ss_est = result_info['result']
         nstep = result_info['nstep']
 
