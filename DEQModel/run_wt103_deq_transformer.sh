@@ -23,12 +23,12 @@ if [[ $1 == 'train' ]]; then
         --pretrain_steps 0 \
         --log_interval 200 \
         --eval_interval 5000 \
-        --max_step 300000 \
+        --max_step 5 \
         --tgt_len 150 \
         --mem_len 150 \
         --eval_tgt_len 150 \
         --wnorm \
-        --f_thres 30 \
+        --f_thres 10000 \
         --b_thres 40 \
         --subseq_len 75 \
         --batch_size 56 \
