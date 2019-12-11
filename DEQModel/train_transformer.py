@@ -350,7 +350,7 @@ def evaluate(eval_iter):
         for i, (data, target, seq_len) in enumerate(eval_iter):
             if 0 < args.max_eval_steps <= i:
                 break
-            ret = para_model(data, target, mems, train_step=train_step, f_thres=args.f_thres, 
+            ret, _ = para_model(data, target, mems, train_step=train_step, f_thres=args.f_thres, 
                         b_thres=args.b_thres, subseq_len=subseq_len)
             loss, mems = ret[0], ret[1:]
             loss = loss.mean()
