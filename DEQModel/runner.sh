@@ -42,4 +42,4 @@
 
 
 # Neumann solver implementation
-srun --gres=gpu:4 -c 24 -l -w guppy16 bash run_wt103_deq_transformer.sh train --name 0.0sgd_0.0fpm_baseline --reg_sgd 0.0 --reg_fpm 0.0
+srun --gres=gpu:4 -c 24 -l -w guppy19 bash run_wt103_deq_transformer.sh train --name 0.0sgd_0.0fpm_baseline --reg_sgd 0.0 --reg_fpm 0.0
