@@ -62,7 +62,7 @@ class DEQFunc(Function):
         ctx.args_len = len(args)
 
         with torch.enable_grad():
-            y = DEQFunc.f(func, z1ss_est, uss, z0, *args)
+            #y = DEQFunc.f(func, z1ss_est, uss, z0, *args)
             print('func.dec_attn.qkv_net.weight.shape: {}'.format(func.dec_attn.qkv_net.weight.shape))
             print('func.dec_attn.qkv_net.weight.grad: {}'.format(func.dec_attn.qkv_net.weight.grad))
 
