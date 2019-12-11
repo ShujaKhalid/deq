@@ -400,6 +400,9 @@ def train():
             # is calculated in DummyDEQFunc.backward()
             loss = loss.float().mean().type_as(loss)
 
+            print('loss: {}'.format(loss))
+            print('Before backpropogating')
+
             loss.backward()
             train_loss += loss.float().item()
 
