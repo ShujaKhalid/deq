@@ -38,8 +38,8 @@
 #srun --gres=gpu:4 -c 24 -l -w guppy25 bash run_wt103_deq_transformer.sh train --name 0.4sgd_0.0fpm --reg_sgd 0.4 --reg_fpm 0.0
 #srun --gres=gpu:4 -c 24 -l -w guppy35 bash run_wt103_deq_transformer.sh train --name 0.6sgd_0.0fpm --reg_sgd 0.6 --reg_fpm 0.0
 #srun --gres=gpu:4 -c 24 -l -w guppy34 bash run_wt103_deq_transformer.sh train --name 0.8sgd_0.0fpm --reg_sgd 0.8 --reg_fpm 0.0
-srun --gres=gpu:4 -c 24 -l -w guppy28 bash run_wt103_deq_transformer.sh train --name 1.0sgd_0.0fpm --reg_sgd 1.0 --reg_fpm 0.0
+#srun --gres=gpu:4 -c 24 -l -w guppy28 bash run_wt103_deq_transformer.sh train --name 1.0sgd_0.0fpm --reg_sgd 1.0 --reg_fpm 0.0
 
 
 # Neumann solver implementation
-#srun --gres=gpu:4 -c 24 -l -w guppy19 bash run_wt103_deq_transformer.sh train --name 0.0sgd_0.0fpm_baseline --reg_sgd 0.0 --reg_fpm 0.0
+srun --gres=gpu:4 -c 24 -l -w guppy19 bash run_wt103_deq_transformer.sh train --name 0.0sgd_0.0fpm_baseline --reg_sgd 0.0 --reg_fpm 0.0
