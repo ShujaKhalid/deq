@@ -102,9 +102,12 @@ class DummyDEQFunc(Function):
         nstep = result_info['nstep']
         
         grad_f_x = g(dl_df_est)
-        grad_f_x_norm = 1.0*(torch.norm(grad_f_x-1.0))**2
+        grad_f_x_norm = 1.0*((torch.norm(grad_f_x-1.0))**2)
         
         dl_df_est_reg = dl_df_est + grad_f_x_norm
+        print('grad_f_x_norm: {}'.format(grad_f_x_norm))
+        print('dl_df_est: {}'.format(dl_df_est))
+        print('(torch.norm(grad_f_x))**2: {}'.format((torch.norm(grad_f_x))**2))
 
         # Frees the buffers and drops the graph!
         y.backward(torch.zeros_like(dl_df_est), retain_graph=False)

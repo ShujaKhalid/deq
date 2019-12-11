@@ -19,10 +19,10 @@ if [[ $1 == 'train' ]]; then
         --dropatt 0.0 \
         --optim Adam \
         --lr 0.00025 \
-        --warmup_step 10000 \
-        --pretrain_steps 10000 \
-        --log_interval 100 \
-        --eval_interval 500 \
+        --warmup_step 0 \
+        --pretrain_steps 0 \
+        --log_interval 1000 \
+        --eval_interval 5000 \
         --max_step 300000 \
         --tgt_len 150 \
         --mem_len 150 \
