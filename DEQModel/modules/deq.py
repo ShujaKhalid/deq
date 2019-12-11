@@ -26,14 +26,26 @@ class DEQFunc(Function):
     @staticmethod
     def broyden_find_root(func, z1ss, uss, z0, eps, *args):
         bsz, d_model, seq_len = z1ss.size()
-        z1ss_est = z1ss.clone().detach()
+        z1ss_est = z1ss.clone().detach().requires_grad_()
         threshold = args[-2]    # Can also set this to be different, based on training/inference
         train_step = args[-1]
+
+        with torch.enable_grad():
+            y = DEQFunc.f(func, z1ss_est, uss, z0, *args)
+
+        def grad_f_x(x):
+            y.backward(x, retain_graph=True)   # Retain for future calls to g
+            JTx = z1ss_est.grad.clone().detach()
+            z1ss_est.grad.zero_()
+            return JTx
 
         g = lambda x: DEQFunc.g(func, x, uss, z0, *args)
         result_info = broyden(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
         z1ss_est = result_info['result']
         nstep = result_info['nstep']
+
+        print('grad_f_x(z1ss_est): {}'.format(grad_f_x(z1ss_est).shape))
+        print('torch.norm(grad_f_x(z1ss_est))**2: {}'.format(torch.norm(grad_f_x(z1ss_est))**2))
 
         if threshold > 100:
             torch.cuda.empty_cache()
@@ -100,21 +112,12 @@ class DummyDEQFunc(Function):
         result_info = broyden(g, dl_df_est, threshold=threshold, eps=eps, name="backward")
         dl_df_est = result_info['result']
         nstep = result_info['nstep']
-        
-        grad_f_x = g(dl_df_est)
-        grad_f_x_norm = 1.0*((torch.norm(grad_f_x-1.0))**2)
-        
-        dl_df_est_reg = dl_df_est + grad_f_x_norm
-        print('grad_f_x_norm: {}'.format(grad_f_x_norm.shape))
-        print('dl_df_est: {}'.format(dl_df_est.shape))
-        print('(torch.norm(grad_f_x))**2: {}'.format((torch.norm(grad_f_x))**2))
 
         # Frees the buffers and drops the graph!
         y.backward(torch.zeros_like(dl_df_est), retain_graph=False)
 
         grad_args = [None for _ in range(len(args))]
-        #return (None, dl_df_est, None, None, *grad_args) # regularized term
-        return (None, None, dl_df_est_reg, None, None, *grad_args)
+        return (None, dl_df_est, None, None, *grad_args) # regularized term
 
 
 class DEQForward(nn.Module):
