@@ -383,7 +383,7 @@ def train():
             for i in range(args.batch_chunk):
                 data_i = data_chunks[i].contiguous()
                 target_i = target_chunks[i].contiguous()
-                ret = para_model(data_i, target_i, mems[i], train_step=train_step, f_thres=args.f_thres, 
+                ret, _ = para_model(data_i, target_i, mems[i], train_step=train_step, f_thres=args.f_thres, 
                                  b_thres=args.b_thres, subseq_len=subseq_len)
                 loss, mems[i] = ret[0], ret[1:]         # mems[i]: # 3 x bsz
                 loss = loss.float().mean().type_as(loss) / args.batch_chunk
