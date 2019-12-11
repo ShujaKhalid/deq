@@ -64,7 +64,7 @@ class DEQFunc(Function):
         with torch.enable_grad():
             #y = DEQFunc.f(func, z1ss_est, uss, z0, *args)
             print('func.dec_attn.qkv_net.weight.shape: {}'.format(func.dec_attn.qkv_net.weight.shape))
-            print('func.dec_attn.qkv_net.weight.grad: {}'.format(func.dec_attn.qkv_net.weight.grad))
+            print('func.dec_attn.qkv_net.weight.grad: {}'.format(func.dec_attn.qkv_net.grad))
 
         with torch.no_grad():
             z1ss_est, g_f_x = root_find(func, z1ss, uss, z0, eps, *args)   # args include pos_emb, threshold, train_step
