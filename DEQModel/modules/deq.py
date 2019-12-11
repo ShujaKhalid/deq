@@ -38,7 +38,7 @@ class DEQFunc(Function):
         result_info = broyden(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
 
         def grad_f_x(x):
-            func.backward(x, retain_graph=True)   # Retain for future calls to g
+            y.backward(x, retain_graph=True)   # Retain for future calls to g
             JTx = z1ss_est.grad.clone().detach()
             z1ss_est.grad.zero_()
             return JTx
