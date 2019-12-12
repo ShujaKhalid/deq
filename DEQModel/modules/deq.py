@@ -46,8 +46,8 @@ class DEQFunc(Function):
 
         def grad_f_x(x):
            y.backward(x, retain_graph=True)   # Retain for future calls to g
-           JTx = z1ss_est.grad.clone().detach()
-           z1ss_est.grad.zero_()
+           JTx = z1ss_est_temp.grad.clone().detach()
+           z1ss_est_temp.grad.zero_()
            return JTx
 
         g_f_x = grad_f_x(z1ss_est)
