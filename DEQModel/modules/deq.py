@@ -34,8 +34,7 @@ class DEQFunc(Function):
         #with torch.enable_grad():
         #    y = DEQFunc.f(func, z1ss_est, uss, z0, *args)
 
-        #g = lambda x: DEQFunc.g(func, x, uss, z0, *args)
-        
+        g = lambda x: DEQFunc.g(func, x, uss, z0, *args)
         result_info = broyden(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
 
         #def grad_f_x(x):
