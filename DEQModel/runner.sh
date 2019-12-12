@@ -34,7 +34,7 @@
 
 # Regularization term to the training (perplexity) objective (txp GPUs for consistency)
 #srun --gres=gpu:4 -c 24 -l -w guppy36 bash run_wt103_deq_transformer.sh train --name 0.0sgd_0.0fpm --reg_sgd 0.0 --reg_fpm 0.0
-srun --gres=gpu:4 -c 24 -l -w guppy31 bash run_wt103_deq_transformer.sh train --name 0.0sgd_0.0fpm --reg_sgd 0.0 --reg_fpm 0.0
+srun --gres=gpu:4 -c 24 -l -w guppy36 bash run_wt103_deq_transformer.sh train --name 0.0sgd_0.0fpm --reg_sgd 0.0 --reg_fpm 0.0
 
 #srun --gres=gpu:4 -c 24 -l -w guppy31 bash run_wt103_deq_transformer.sh train --name 0.2sgd_0.0fpm --reg_sgd 0.2 --reg_fpm 0.0
 #srun --gres=gpu:4 -c 24 -l -w guppy25 bash run_wt103_deq_transformer.sh train --name 0.4sgd_0.0fpm --reg_sgd 0.4 --reg_fpm 0.0
