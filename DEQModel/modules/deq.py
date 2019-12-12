@@ -40,7 +40,8 @@ class DEQFunc(Function):
 
         # \nabla calc =================================================
         z1ss_est_temp = z1ss.clone().detach().requires_grad_()
-        func_copy = func.copy()
+        func_copy = func
+        func_copy = copy.deepcopy(func)
 
         with torch.enable_grad():
             y = DEQFunc.f(func_copy, z1ss_est_temp, uss, z0, *args)
