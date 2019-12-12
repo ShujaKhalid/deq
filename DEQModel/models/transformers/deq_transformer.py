@@ -373,6 +373,21 @@ class DEQTransformerLM(nn.Module):
             if self.training:
                 z1s = self.deqback(z1s, us, z0, pos_emb=pos_emb, subseq_len=subseq_len, threshold=b_thres, train_step=train_step)
                     
+            # # \nabla calc =================================================
+            # z1ss_est_temp = z1s.clone().detach().requires_grad_()
+
+            # with torch.enable_grad():
+            #     y = DEQFunc.f(self.func, z1ss_est_temp, uss, z0, *args)
+
+            # def grad_f_x(x):
+            #    y.backward(x, retain_graph=True)   # Retain for future calls to g
+            #    JTx = z1ss_est_temp.grad.clone().detach()
+            #    z1ss_est_temp.grad.zero_()
+            #    return JTx
+
+            # g_f_x = grad_f_x(z1ss_est)
+            # # =============================================================
+
         core_out = self.iodrop(z1s, self.dropout)
         core_out = core_out.permute(2,0,1).contiguous()       # qlen x bsz x d_model
         new_mems = self._update_mems(z1s, us, z0, mlen, qlen)
@@ -409,9 +424,9 @@ class DEQTransformerLM(nn.Module):
         loss = loss.view(tgt_len, -1)
 
         if new_mems is None:
-            return [loss], g_f_x
+            return [loss], pred_hid, g_f_x
         else:
-            return [loss] + new_mems, g_f_x
+            return [loss] + new_mems, pred_hid, g_f_x
 
 
 if __name__ == '__main__':

@@ -38,20 +38,21 @@ class DEQFunc(Function):
         z1ss_est = result_info['result']
         nstep = result_info['nstep']
 
-        # # \nabla calc =================================================
-        # z1ss_est_temp = z1ss.clone().detach().requires_grad_()
+        # \nabla calc =================================================
+        z1ss_est_temp = z1ss.clone().detach().requires_grad_()
+        func_copy.copy(func)
 
-        # with torch.enable_grad():
-        #     y = DEQFunc.f(func, z1ss_est_temp, uss, z0, *args)
+        with torch.enable_grad():
+            y = DEQFunc.f(func_copy, z1ss_est_temp, uss, z0, *args)
 
-        # def grad_f_x(x):
-        #    y.backward(x, retain_graph=True)   # Retain for future calls to g
-        #    JTx = z1ss_est_temp.grad.clone().detach()
-        #    z1ss_est_temp.grad.zero_()
-        #    return JTx
+        def grad_f_x(x):
+           y.backward(x, retain_graph=True)   # Retain for future calls to g
+           JTx = z1ss_est_temp.grad.clone().detach()
+           z1ss_est_temp.grad.zero_()
+           return JTx
 
-        # g_f_x = grad_f_x(z1ss_est)
-        # # =============================================================
+        g_f_x = grad_f_x(z1ss_est)
+        # =============================================================
 
         if threshold > 100:
             torch.cuda.empty_cache()
@@ -67,21 +68,6 @@ class DEQFunc(Function):
 
         with torch.no_grad():
             z1ss_est, g_f_x = root_find(func, z1ss, uss, z0, eps, *args)   # args include pos_emb, threshold, train_step
-
-            # \nabla calc =================================================
-            z1ss_est_temp = z1ss_est.clone().detach().requires_grad_()
-
-            with torch.enable_grad():
-                y = DEQFunc.f(func, z1ss_est_temp, uss, z0, *args)
-
-            def grad_f_x(x):
-               y.backward(x, retain_graph=True)   # Retain for future calls to g
-               JTx = z1ss_est_temp.grad.clone().detach()
-               z1ss_est_temp.grad.zero_()
-               return JTx
-
-            g_f_x = grad_f_x(z1ss_est)
-            # =============================================================
 
             # If one would like to analyze the convergence process (e.g., failures, stability), should
             # insert here or in broyden_find_root.
@@ -140,7 +126,7 @@ class DummyDEQFunc(Function):
         y.backward(torch.zeros_like(dl_df_est), retain_graph=False)
 
         grad_args = [None for _ in range(len(args))]
-        return (None, dl_df_est, None, None, *grad_args) # regularized term
+        return (None, dl_df_est, None, None, *grad_args) 
 
 
 class DEQForward(nn.Module):
