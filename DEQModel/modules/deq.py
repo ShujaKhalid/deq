@@ -39,20 +39,20 @@ class DEQFunc(Function):
         nstep = result_info['nstep']
 
         # \nabla calc =================================================
-        z1ss_est_temp = z1ss.clone().detach().requires_grad_()
-        func_copy = func
-        #func_copy = copy.deepcopy(func_copy)
+        # z1ss_est_temp = z1ss.clone().detach().requires_grad_()
+        # func_copy = func
+        # #func_copy = copy.deepcopy(func_copy)
 
-        with torch.enable_grad():
-            y = DEQFunc.f(func_copy, z1ss_est_temp, uss, z0, *args)
+        # with torch.enable_grad():
+        #     y = DEQFunc.f(func_copy, z1ss_est_temp, uss, z0, *args)
 
-        def grad_f_x(x):
-           y.backward(x, retain_graph=True)   # Retain for future calls to g
-           JTx = z1ss_est_temp.grad.clone().detach()
-           z1ss_est_temp.grad.zero_()
-           return JTx
+        # def grad_f_x(x):
+        #    y.backward(x, retain_graph=True)   # Retain for future calls to g
+        #    JTx = z1ss_est_temp.grad.clone().detach()
+        #    z1ss_est_temp.grad.zero_()
+        #    return JTx
 
-        g_f_x = grad_f_x(z1ss_est)
+        # g_f_x = grad_f_x(z1ss_est)
         # =============================================================
 
         if threshold > 100:
