@@ -39,7 +39,7 @@ class DEQFunc(Function):
         nstep = result_info['nstep']
 
         # \nabla calc =================================================
-        z1ss_est_temp= z1ss.clone().detach().requires_grad_()
+        z1ss_est_temp = z1ss.clone().detach().requires_grad_()
 
         with torch.enable_grad():
             y = DEQFunc.f(func, z1ss_est_temp, uss, z0, *args)
@@ -50,7 +50,7 @@ class DEQFunc(Function):
            z1ss_est_temp.grad.zero_()
            return JTx
 
-        g_f_x = grad_f_x(z1ss_est)
+        #g_f_x = grad_f_x(z1ss_est)
         # =============================================================
 
         if threshold > 100:
