@@ -35,7 +35,8 @@ class DEQFunc(Function):
         #    y = DEQFunc.f(func, z1ss_est, uss, z0, *args)
 
         #g = lambda x: DEQFunc.g(func, x, uss, z0, *args)
-        #result_info = broyden(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
+        
+        result_info = broyden(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
 
         #def grad_f_x(x):
         #    y.backward(x, retain_graph=True)   # Retain for future calls to g
@@ -52,7 +53,7 @@ class DEQFunc(Function):
 
         if threshold > 100:
             torch.cuda.empty_cache()
-            
+
         return z1ss_est.clone().detach(), g_f_x
 
     @staticmethod
