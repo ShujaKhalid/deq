@@ -105,8 +105,8 @@ class DEQFunc(Function):
         bsz, d_model, seq_len = z1ss.size()
         eps = 1e-6 * np.sqrt(bsz * seq_len * d_model)
 
-        #solver='broyden'
-        solver='neumann'
+        solver='broyden'
+        #solver='neumann'
 
         if (solver=='neumann'):
             root_find = DEQFunc.neumann_find_root
