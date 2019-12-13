@@ -11,7 +11,7 @@ def matvec(part_Us, part_VTs, x):
     return -x + torch.einsum('bijd, bd -> bij', part_Us, VTx)     # (N, 2d, L'), but should really be (N, (2d*L'), 1)
 
 
-def neumann(v0, threshold, eps):
+def neumann(g, v0, threshold, eps):
     vt = v0
     gt = v0
     nstep = 0
