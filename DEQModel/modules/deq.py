@@ -10,7 +10,7 @@ from scipy.optimize import root
 import time
 from termcolor import colored
 import copy
-from modules.broyden import broyden, analyze_broyden
+from modules.broyden import broyden, analyze_broyden, neumann
 
 
 class DEQFunc(Function):
@@ -60,11 +60,60 @@ class DEQFunc(Function):
 
         return z1ss_est.clone().detach(), g_f_x
 
+
+    @staticmethod
+    def neumann_find_root(func, z1ss, uss, z0, eps, *args):
+        bsz, d_model, seq_len = z1ss.size()
+        z1ss_est = z1ss.clone().detach()
+        threshold = args[-2]    # Can also set this to be different, based on training/inference
+        train_step = args[-1]
+
+        g = lambda x: DEQFunc.g(func, x, uss, z0, *args)
+        result_info = neumann(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
+
+        g_f_x = torch.zeros_like(z1ss_est)
+           
+        z1ss_est = result_info['result']
+        nstep = result_info['nstep']
+
+        # \nabla calc =================================================
+        # z1ss_est_temp = z1ss.clone().detach().requires_grad_()
+        # func_copy = func
+        # #func_copy = copy.deepcopy(func_copy)
+
+        # with torch.enable_grad():
+        #     y = DEQFunc.f(func_copy, z1ss_est_temp, uss, z0, *args)
+
+        # def grad_f_x(x):
+        #    y.backward(x, retain_graph=True)   # Retain for future calls to g
+        #    JTx = z1ss_est_temp.grad.clone().detach()
+        #    z1ss_est_temp.grad.zero_()
+        #    return JTx
+
+        # g_f_x = grad_f_x(z1ss_est)
+        # =============================================================
+
+        if threshold > 100:
+            torch.cuda.empty_cache()
+
+        return z1ss_est.clone().detach(), g_f_x
+
+
     @staticmethod
     def forward(ctx, func, z1ss, uss, z0, *args):
         bsz, d_model, seq_len = z1ss.size()
         eps = 1e-6 * np.sqrt(bsz * seq_len * d_model)
-        root_find = DEQFunc.broyden_find_root
+
+        #solver='broyden'
+        solver='neumann'
+
+        if (solver=='neumann'):
+            root_find = DEQFunc.neumann_find_root
+        elif (solver=='broyden'):
+            root_find = DEQFunc.broyden_find_root
+        else:
+            print('NO SOLVER SELECTED! Choose between [\'Neumann\', \'Broyden\']')
+
         ctx.args_len = len(args)
 
         with torch.no_grad():
