@@ -16,7 +16,7 @@ def neumann(g, v0, threshold, eps):
     gt = v0
     nstep = 0
     max_unroll = 3
-    bsz, total_hsize, seq_len = x0.size()
+    bsz, total_hsize, seq_len = v0.size()
 
     # For fast calculation of inv_jacobian (approximately)
     Us = torch.zeros(bsz, total_hsize, seq_len, threshold)     # One can also use an L-BFGS scheme to further reduce memory
