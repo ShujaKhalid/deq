@@ -424,9 +424,9 @@ class DEQTransformerLM(nn.Module):
         loss = loss.view(tgt_len, -1)
 
         if new_mems is None:
-            return [loss], pred_hid, g_f_x
+            return [loss], g_f_x
         else:
-            return [loss] + new_mems, pred_hid, g_f_x
+            return [loss] + new_mems, g_f_x
 
 
 if __name__ == '__main__':

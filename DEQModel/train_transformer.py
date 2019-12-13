@@ -392,7 +392,7 @@ def train():
                 
         else:
             # Mode 2: Normal training with one batch per iteration
-            ret, z1sss, g_f_x = para_model(data, target, mems, train_step=train_step, f_thres=args.f_thres, 
+            ret, g_f_x = para_model(data, target, mems, train_step=train_step, f_thres=args.f_thres, 
                              b_thres=args.b_thres, subseq_len=subseq_len)
             loss, mems = ret[0], ret[1:]
 
