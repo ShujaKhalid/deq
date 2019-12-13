@@ -10,7 +10,8 @@ from scipy.optimize import root
 import time
 from termcolor import colored
 import copy
-from modules.broyden import broyden, analyze_broyden, neumann
+from modules.broyden import broyden, analyze_broyden
+from modules.neumann import neumann
 
 
 class DEQFunc(Function):
