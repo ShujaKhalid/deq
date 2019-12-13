@@ -69,7 +69,7 @@ class DEQFunc(Function):
         threshold = args[-2]    # Can also set this to be different, based on training/inference
         train_step = args[-1]
 
-        #g = lambda x: DEQFunc.g(func, x, uss, z0, *args)
+        g = lambda x: DEQFunc.g(func, x, uss, z0, *args)
         result_info = neumann(g, z1ss_est, threshold=threshold, eps=eps, name="forward")
 
         g_f_x = torch.zeros_like(z1ss_est)
