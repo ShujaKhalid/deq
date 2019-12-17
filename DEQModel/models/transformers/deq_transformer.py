@@ -391,7 +391,7 @@ class DEQTransformerLM(nn.Module):
         core_out = self.iodrop(z1s, self.dropout)
         core_out = core_out.permute(2,0,1).contiguous()       # qlen x bsz x d_model
         new_mems = self._update_mems(z1s, us, z0, mlen, qlen)
-        return core_out, new_mems, g_f_x
+        return core_out, new_mems, z1s
 
     def forward(self, data, target, mems, train_step=-1, **kwargs):
         # nn.DataParallel does not allow size(0) tensors to be broadcasted.
@@ -416,7 +416,7 @@ class DEQTransformerLM(nn.Module):
         subseq_len = kwargs.get('subseq_len', 75)
         f_thres = kwargs.get('f_thres', 30)
         b_thres = kwargs.get('b_thres', 40)
-        hidden, new_mems, g_f_x = self._forward(data, subseq_len=subseq_len, mems=mems, 
+        hidden, new_mems, z1s = self._forward(data, subseq_len=subseq_len, mems=mems, 
                                          f_thres=f_thres, b_thres=b_thres, train_step=train_step)
         
         pred_hid = hidden[-tgt_len:]
@@ -424,9 +424,9 @@ class DEQTransformerLM(nn.Module):
         loss = loss.view(tgt_len, -1)
 
         if new_mems is None:
-            return [loss], g_f_x
+            return [loss], z1s
         else:
-            return [loss] + new_mems, g_f_x
+            return [loss] + new_mems, z1s
 
 
 if __name__ == '__main__':
