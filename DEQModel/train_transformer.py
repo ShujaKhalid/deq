@@ -392,12 +392,12 @@ def train():
                 
         else:
             # Mode 2: Normal training with one batch per iteration
-            ret, z1sss = para_model(data, target, mems, train_step=train_step, f_thres=args.f_thres, 
+            ret, g_f_x = para_model(data, target, mems, train_step=train_step, f_thres=args.f_thres, 
                              b_thres=args.b_thres, subseq_len=subseq_len)
             loss, mems = ret[0], ret[1:]
 
             # \nabla calc =================================================
-            z1ss_est_temp = z1sss.clone().detach().requires_grad_()
+            #z1ss_est_temp = z1sss.clone().detach().requires_grad_()
 
             # with torch.enable_grad():
             #     y = DEQFunc.f(self.func, z1ss_est_temp, uss, z0, *args)
@@ -408,11 +408,11 @@ def train():
             #    z1ss_est_temp.grad.zero_()
             #    return JTx
 
-            func_temp = model.func
-            F = func_temp(z1ss_est_temp)
+            #func_temp = model.func
+            #F = func_temp(z1ss_est_temp)
             #g_f_x = grad_f_x(z1ss_est)
-            g_f_x = torch.autograd.grad(torch.sum(F), z1ss_est_temp, create_graph=True)
-            print(g_f_x)
+            #g_f_x = torch.autograd.grad(torch.sum(F), z1ss_est_temp, create_graph=True)
+            #print(g_f_x)
             # =============================================================
 
             # Gradient with respect to the equilibrium point
