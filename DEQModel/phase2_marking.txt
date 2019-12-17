@@ -1,0 +1,11 @@
+User Interactions: Signing up was problematic if I enter 'user' for every field. There are no prompts to tell me what the issue is.
+
+Overall Layout: If a small image is added in the new car section, the entire adlist becomes very hard to read as there are overlapping elements.
+
+REALLY solid admin page. Really glad you were able to pull this off. However, there were some display issues on my screen with the notifications icon at the end of the page (on the right).
+
+Great template work would have received a perfect if there weren't some imperfections in the display.
+
+Route information not clearly defined in phase2.txt
+
+Overall, a really solid app!
