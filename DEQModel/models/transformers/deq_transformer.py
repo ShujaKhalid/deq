@@ -374,7 +374,7 @@ class DEQTransformerLM(nn.Module):
                 z1s = self.deqback(z1s, us, z0, pos_emb=pos_emb, subseq_len=subseq_len, threshold=b_thres, train_step=train_step)
                     
             # # \nabla calc =================================================
-            z1ss_est_temp = z1s.clone().detach().requires_grad_()
+            #z1ss_est_temp = z1s.clone().detach().requires_grad_()
 
             # with torch.enable_grad():
             #     y = DEQFunc.f(self.func, z1ss_est_temp, uss, z0, *args)
@@ -386,9 +386,12 @@ class DEQTransformerLM(nn.Module):
             #    return JTx
 
             # g_f_x = grad_f_x(z1ss_est)
-            
+
+            z1ss_est_temp = Variable(z1s.data, requires_grad=True)
+
             with torch.enable_grad():
                 F = self.func(z1ss_est_temp, us, z0, pos_emb)
+
             g_f_x = torch.autograd.grad(torch.sum(F), z1ss_est_temp, create_graph=True)[0]
             print(torch.norm(g_f_x,2)**2)            
             # =============================================================
