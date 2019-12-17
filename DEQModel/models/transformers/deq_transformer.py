@@ -384,12 +384,12 @@ class DEQTransformerLM(nn.Module):
             #    JTx = z1ss_est_temp.grad.clone().detach()
             #    z1ss_est_temp.grad.zero_()
             #    return JTx
-            
+
             # g_f_x = grad_f_x(z1ss_est)
 
             F = self.func(z1ss_est_temp, us, z0, pos_emb)
             g_f_x = torch.autograd.grad(torch.sum(F), z1ss_est_temp, create_graph=True)
-            print(g_f_x)            
+            print(torch.norm(g_f_x,2))            
             # =============================================================
 
         core_out = self.iodrop(z1s, self.dropout)
