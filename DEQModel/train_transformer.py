@@ -399,8 +399,8 @@ def train():
             # \nabla calc =================================================
             z1ss_est_temp = z1sss.clone().detach().requires_grad_()
 
-            with torch.enable_grad():
-                y = DEQFunc.f(self.func, z1ss_est_temp, uss, z0, *args)
+            # with torch.enable_grad():
+            #     y = DEQFunc.f(self.func, z1ss_est_temp, uss, z0, *args)
 
             # def grad_f_x(x):
             #    y.backward(x, retain_graph=True)   # Retain for future calls to g
