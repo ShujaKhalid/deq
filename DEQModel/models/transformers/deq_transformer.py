@@ -387,7 +387,7 @@ class DEQTransformerLM(nn.Module):
 
             # g_f_x = grad_f_x(z1ss_est)
 
-            z1ss_est_temp = Variable(z1s.data, requires_grad=True)
+            z1ss_est_temp = torch.autograd.Variable(z1s.data, requires_grad=True)
 
             with torch.enable_grad():
                 F = self.func(z1ss_est_temp, us, z0, pos_emb)
