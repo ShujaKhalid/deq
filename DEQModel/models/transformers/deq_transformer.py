@@ -386,13 +386,13 @@ class DEQTransformerLM(nn.Module):
             #    return JTx
 
             # g_f_x = grad_f_x(z1ss_est)
-                    
-            print(self.func.grad)   
-            if (self.func.grad != None):                                                                                                                                            
-                z1ss_est_temp = torch.autograd.Variable(z1s.data, requires_grad=True)
 
-                with torch.enable_grad():
-                    F = self.func(z1ss_est_temp, us, z0, pos_emb)
+            with torch.enable_grad():
+                F = self.func(z1ss_est_temp, us, z0, pos_emb)      
+
+            print(torch.sum(F).grad)   
+            if (torch.sum(F).grad != None):                                                                                                                                            
+                z1ss_est_temp = torch.autograd.Variable(z1s.data, requires_grad=True)
 
                 print(model.training)
                 print(torch.sum(F))            
