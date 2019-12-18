@@ -399,7 +399,7 @@ class DEQTransformerLM(nn.Module):
                 g_f_x = torch.autograd.grad(torch.sum(F), z1ss_est_temp, create_graph=True)[0]          
                 print(torch.norm(g_f_x,2)**2)
             else:
-                g_f_x = 0.0
+                g_f_x = torch.zeros_like(z1ss_est_temp)
             # =============================================================
 
         core_out = self.iodrop(z1s, self.dropout)
