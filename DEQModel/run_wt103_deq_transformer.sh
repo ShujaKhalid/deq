@@ -22,7 +22,7 @@ if [[ $1 == 'train' ]]; then
         --warmup_step 0 \
         --pretrain_steps 0 \
         --log_interval 100 \
-        --eval_interval 1000 \
+        --eval_interval 2500 \
         --max_step 300000 \
         --tgt_len 150 \
         --mem_len 150 \
