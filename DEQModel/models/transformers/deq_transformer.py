@@ -387,14 +387,14 @@ class DEQTransformerLM(nn.Module):
 
             # g_f_x = grad_f_x(z1ss_est)
 
+            z1ss_est_temp = torch.autograd.Variable(z1s.data, requires_grad=True)
+
             with torch.enable_grad():
                 F = self.func(z1ss_est_temp, us, z0, pos_emb)      
 
             print(torch.sum(F).grad)   
             if (torch.sum(F).grad != None):                                                                                                                                            
-                z1ss_est_temp = torch.autograd.Variable(z1s.data, requires_grad=True)
 
-                print(model.training)
                 print(torch.sum(F))            
                 g_f_x = torch.autograd.grad(torch.sum(F), z1ss_est_temp, create_graph=True)[0]          
                 print(torch.norm(g_f_x,2)**2)
