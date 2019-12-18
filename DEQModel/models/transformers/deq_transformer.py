@@ -383,7 +383,7 @@ class DEQTransformerLM(nn.Module):
 
 
             print(F.requires_grad)
-            if (torch.sum(F).grad is not None):                                                                                                                                            
+            if (F.requires_grad == True):                                                                                                                                            
                 #print(torch.sum(F))            
                 g_f_x = torch.autograd.grad(torch.sum(F), z1ss_est_temp, create_graph=True)[0]          
                 print(torch.norm(g_f_x,2)**2)
